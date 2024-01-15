@@ -2,7 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
-const cors = require('cors'); // add cors bcs of cry baby
+const cors = require('cors');
+const axios = require('axios');
 const conf = require('./config.json');
 
 const app = express();
@@ -30,17 +31,15 @@ const CounterModel = mongoose.model('Counter', {
 
 // Thingys
 app.use(bodyParser.json());
-app.use(cors())
+app.use(cors());
 app.use(express.static('public'));
 
 // Rate limiting middleware
 const limiter = rateLimit({
-    windowMs:  10 * 1000, // 10 seconds for dumby who cant read
-    max: 10000, // 10000 in that timeline
+    windowMs:  10 * 1000,
+    max: 10000,
 });
 app.use(limiter);
-
-
 
 // Generate a random 24-character ID with "RUBY_" at the start
 app.get('/id', async (req, res) => {
@@ -79,6 +78,32 @@ app.get('/counter/get', async (req, res) => {
         res.json({ keyname, count: counter.count });
     } else {
         res.json({ keyname, count: 0 });
+    }
+});
+
+// New route to handle the specified curl command using axios
+app.post('/generateContent', async (req, res) => {
+    const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=' + conf.GEMINI_KEY;
+
+    if (req.body.text === null || req.body.text === undefined || req.body.text === "") return res.send("No text")
+
+    try {
+        const response = await axios.post(apiUrl, {
+            contents: [
+                {
+                    parts: [
+                        {
+                            text: req.body.text || 'DEFAULT TEXT PARAMETER',
+                        },
+                    ],
+                },
+            ],
+        });
+
+        res.json(response.data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 
