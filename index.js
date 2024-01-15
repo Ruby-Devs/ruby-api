@@ -3,12 +3,13 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
 const cors = require('cors'); // add cors bcs of cry baby
+const conf = require('config.json');
 
 const app = express();
 const port = 3003;
 
 // MongoDB connection string
-const mongoURI = 'mongodb+srv://rubydevs:WMfROZXSJ3kB6TZ2@cluster0.uyoppby.mongodb.net/mt';
+const mongoURI = conf.MONGO;
 
 // Connect to MongoDB
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
