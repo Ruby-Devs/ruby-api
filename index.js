@@ -9,7 +9,6 @@ const conf = require('./config.json');
 const app = express();
 const port = 3003;
 
-// MongoDB connection string
 const mongoURI = conf.MONGO;
 
 // Connect to MongoDB
