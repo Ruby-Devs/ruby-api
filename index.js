@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
 const cors = require('cors'); // add cors bcs of cry baby
-const conf = require('config.json');
+const conf = require('./config.json');
 
 const app = express();
 const port = 3003;
