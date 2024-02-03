@@ -34,7 +34,7 @@ app.use(cors());
 app.use(express.static('public'));
 
 // get fucked snail ide!
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
     const forbiddenHost = 'snail-ide.js.org';
     
     if (req.hostname === forbiddenHost) {
@@ -42,7 +42,7 @@ app.use((req, res, next) => {
     }
 
     next();
-});
+});*/
 
 // Rate limiting middleware
 const limiter = rateLimit({
