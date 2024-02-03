@@ -33,6 +33,17 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static('public'));
 
+// get fucked snail ide!
+app.use((req, res, next) => {
+    const forbiddenHost = 'snail-ide.js.org';
+    
+    if (req.hostname === forbiddenHost) {
+        return res.status(403).send('Snail IDE is currently not allowed to make requests to this API. The creators must talk to G1nX first before this restriction is lifted.');
+    }
+
+    next();
+});
+
 // Rate limiting middleware
 const limiter = rateLimit({
     windowMs:  10 * 1000,
